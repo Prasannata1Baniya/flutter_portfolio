@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CustomColor {
-  static Color scaffold=Colors.black26;
+  static Color scaffold= Colors.black;
+  //const Color(0xff1A1A1A);
+  //Color(0x483C32);
   static Color bglight1=Colors.indigo.shade800;
   static Color bglight2=Colors.grey.shade600;
   static Color textFieldBg=Colors.white;
