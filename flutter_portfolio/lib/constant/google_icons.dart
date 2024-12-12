@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-//For Skills
-/*class GoogleIconI{
-  static Map<String , IconData> icons={
-    'Flutter':MdiIcons.flutter,
+//For Cross Platforms
+class PlatformIcon{
+  static Map<String,IconData> icons={
+    'Android':MdiIcons.android,
+    'IOS':MdiIcons.appleIos,
+    'Windows':MdiIcons.microsoftWindows,
+    'Desktop':MdiIcons.remoteDesktop,
   };
+  static IconData getIcon(String iconName){
+    return icons[iconName] ??Icons.error;
+  }
 }
-*/
-
 
 //For Contacts
 class GoogleIcon{
