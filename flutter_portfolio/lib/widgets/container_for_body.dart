@@ -25,8 +25,8 @@ Container deviceFrame(){
            const  CircleAvatar(
               backgroundImage: AssetImage(
                   "assets/images/photo.jpg"),
-              minRadius: 50, // Minimum radius
-              maxRadius: 100, //Maximum radius
+              minRadius: 50,
+              maxRadius: 100,
             ),
          const  SizedBox(height:15),
             textWhite("Flutter Developer"),

@@ -54,8 +54,8 @@ Padding containerForProjects(String title,String subTitle,String image){
             borderRadius: BorderRadius.circular(25),
             child: Image.asset(
               image,
-              height: 80,  // Height of the image
-              width: 80,   // Width of the image
+              height: 80,
+              width: 80,
               fit: BoxFit.cover,
             ),
           ),

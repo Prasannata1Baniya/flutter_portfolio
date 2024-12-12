@@ -23,7 +23,6 @@ class HeaderDesktop extends StatelessWidget {
         borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
-        //mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           LogoPage(onTap: (){}),
           const Spacer(),

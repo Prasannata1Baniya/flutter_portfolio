@@ -116,7 +116,6 @@ class _PortfolioPageState extends State<PortfolioPage> {
                               ],
                             ),
                           ),
-                      //containerForSkills("", "")
                     ],
                   ),
                 ),
