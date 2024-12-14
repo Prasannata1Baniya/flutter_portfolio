@@ -25,7 +25,7 @@ Container containerForSkills(String name, String imageData, double fontSize){
   );
 }
 
-Container containerForContacts(IconData? iconData){
+Container containerForContacts(IconData? iconData, VoidCallback launchUrl){
   return Container(
     decoration: BoxDecoration(
       borderRadius:BorderRadius.circular(25),
@@ -33,7 +33,10 @@ Container containerForContacts(IconData? iconData){
     child: Column(
       children: [
         textBlack("Contacts"),
-        Icon(iconData ?? Icons.error,size: 70,color: Colors.white,),
+        IconButton(
+          onPressed: launchUrl,
+            icon: Icon(iconData ?? Icons.error,size: 70,color: Colors.white,),
+        ),
       ],
     ),
   );

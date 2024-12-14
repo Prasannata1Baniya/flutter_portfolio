@@ -6,6 +6,7 @@ import 'package:flutter_portfolio/widgets/container_for_body.dart';
 import 'package:flutter_portfolio/widgets/drawer.dart';
 import 'package:flutter_portfolio/widgets/header_desktop.dart';
 import 'package:flutter_portfolio/widgets/header_mobile.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'utils/container.dart';
 
 class PortfolioPage extends StatefulWidget {
@@ -17,11 +18,23 @@ class PortfolioPage extends StatefulWidget {
 
 class _PortfolioPageState extends State<PortfolioPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final Uri githubUrl =Uri.parse('https://github.com/Prasannata1Baniya');
+  final Uri instaUrl=Uri.parse('');
+  final Uri linkedInUrl=Uri.parse('https://www.linkedin.com/in/prasannata-baniya');
 
+  Future<void> _launchUrl(Uri url) async{
+    if(await canLaunchUrl(url)){
+      await launchUrl(url);
+    }
+    else{
+      throw 'Could not launch $url';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (context, constraints) {
+          bool isDesktop = constraints.maxWidth >= minSize;
           return Scaffold(
             key: scaffoldKey,
             backgroundColor: CustomColor.scaffold,
@@ -44,15 +57,15 @@ class _PortfolioPageState extends State<PortfolioPage> {
 
                 //For desktop
                 if(constraints.maxWidth>=minSize)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    mainColumn(),
-                   deviceFrame(),
-                  ],
-                )
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      mainColumn(),
+                      deviceFrame(),
+                    ],
+                  )
 
-               //for mobile size
+                //for mobile size
                 else
                   Column(
                     children: [
@@ -63,10 +76,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                 const SizedBox(height: 12.0),
 
                 //Skills
-                if(constraints.maxWidth>=minSize)
-               skillsContainer(900,30)
-                else
-                  skillsContainer(350,20),
+                skillsContainer(isDesktop ? 900 : 350, isDesktop ? 30 : 20),
 
                 //projects
                 if(constraints.maxWidth>=minSize)
@@ -86,9 +96,9 @@ class _PortfolioPageState extends State<PortfolioPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          containerForContacts(GoogleIcon.icons['Github']!),
-                          containerForContacts(GoogleIcon.icons['Instagram']!),
-                          containerForContacts(GoogleIcon.icons['LinkedIn']!),
+                          containerForContacts(GoogleIcon.icons['Github']!,()=>_launchUrl(githubUrl)),
+                          containerForContacts(GoogleIcon.icons['Instagram']!,()=>_launchUrl(instaUrl)),
+                          containerForContacts(GoogleIcon.icons['LinkedIn']!,()=>_launchUrl(linkedInUrl)),
                         ],
                       ),
                     ],
