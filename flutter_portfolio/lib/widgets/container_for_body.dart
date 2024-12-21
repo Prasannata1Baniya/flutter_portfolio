@@ -34,8 +34,9 @@ Container deviceFrame() {
 }
 
 //for Skills
-Container skillsContainer(double width,double fontSize) {
+Container skillsContainer(GlobalKey key,double width,double fontSize) {
   return Container(
+    key:key,
     width: double.maxFinite,
     height: 500,
     color: const Color(0xff141414),
@@ -83,13 +84,16 @@ Container skillsContainer(double width,double fontSize) {
 }
 
 //for projects
-Container projectContainer(double ht,double height) {
+Container projectContainer(GlobalKey key,double ht,double height) {
   return Container(
+    key: key,
     width: double.maxFinite,
     height: ht,
     //height: MediaQuery.of(context).size.height,
     color: const Color(0xff282828),
-    child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+    child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
       textWhite("Projects"),
       const SizedBox(height: 12),
       containerForProjects(
@@ -109,9 +113,10 @@ Container projectContainer(double ht,double height) {
 }
 
 //for main page
-Column mainColumn() {
+Column mainColumn(GlobalKey key) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
+    key:key,
     children: [
       const Text(
         ' Hi, I am Prasannata Baniya',

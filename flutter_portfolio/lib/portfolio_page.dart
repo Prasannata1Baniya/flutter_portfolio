@@ -16,12 +16,19 @@ class PortfolioPage extends StatefulWidget {
   State<PortfolioPage> createState() => _PortfolioPageState();
 }
 
-class _PortfolioPageState extends State<PortfolioPage> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final Uri githubUrl =Uri.parse('https://github.com/Prasannata1Baniya');
-  final Uri instaUrl=Uri.parse('');
-  final Uri linkedInUrl=Uri.parse('https://www.linkedin.com/in/prasannata-baniya');
+final scaffoldKey = GlobalKey<ScaffoldState>();
+final ScrollController scrollController=ScrollController();
 
+final GlobalKey homeKey=GlobalKey();
+final GlobalKey skillsKey=GlobalKey();
+final GlobalKey projectsKey=GlobalKey();
+final GlobalKey contactsKey=GlobalKey();
+
+final Uri githubUrl =Uri.parse('https://github.com/Prasannata1Baniya');
+final Uri instaUrl=Uri.parse('');
+final Uri linkedInUrl=Uri.parse('https://www.linkedin.com/in/prasannata-baniya-060b792bb');
+
+class _PortfolioPageState extends State<PortfolioPage> {
   Future<void> _launchUrl(Uri url) async{
     if(await canLaunchUrl(url)){
       await launchUrl(url);
@@ -30,6 +37,34 @@ class _PortfolioPageState extends State<PortfolioPage> {
       throw 'Could not launch $url';
     }
   }
+
+  void scrollToSection(GlobalKey key) {
+    final context = key.currentContext;
+    if (context != null) {
+      final renderBox = context.findRenderObject() as RenderBox;
+      final offset = renderBox.localToGlobal(Offset.zero).dy;
+      scrollController.animateTo(
+          offset, duration:const Duration(seconds: 1), curve: Curves.easeInOut);
+    }
+    else {
+      debugPrint('Context not found for key: $key');
+    }
+  }
+
+
+  void scrollToSectionMobile(GlobalKey key)  {
+      final context = key.currentContext;
+      if (context != null) {
+        Scrollable.ensureVisible(
+          context,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      } else {
+        debugPrint('Context not found for key: $key');
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -40,71 +75,108 @@ class _PortfolioPageState extends State<PortfolioPage> {
             backgroundColor: CustomColor.scaffold,
             endDrawer: constraints.maxWidth >= minSize
                 ? null
-                : const DrawerPage(),
-            body: ListView(
+                : DrawerPage(onNavTap: (int index) {
+              switch (index) {
+                case 0:
+                  scrollToSectionMobile(homeKey);
+                  break;
+                case 1:
+                  scrollToSectionMobile(skillsKey);
+                  break;
+                case 2:
+                  scrollToSectionMobile(projectsKey);
+                  break;
+                case 4:
+                  scrollToSectionMobile(contactsKey);
+                  break;
+              }
+            },),
+            body: SingleChildScrollView(
+              controller: scrollController,
               scrollDirection: Axis.vertical,
-              children: [
-                //Main Page Navigation
-                if(constraints.maxWidth >= minSize)
-                  const HeaderDesktop()
-                else
-                  HeaderMobile(
-                    onLogoTab: () {},
-                    menuTab: () {
-                      scaffoldKey.currentState?.openEndDrawer();
-                    },
+              child: Column(
+                children: [
+                  //Main Page Navigation
+                  if(constraints.maxWidth >= minSize)
+                    HeaderDesktop(onNavTap: (int index) {
+                      switch (index) {
+                        case 0:
+                          scrollToSection(homeKey);
+                          break;
+                        case 1:
+                          scrollToSection(skillsKey);
+                          break;
+                        case 2:
+                          scrollToSection(projectsKey);
+                          break;
+                        case 3:
+                          break;// Skip index 3 if no corresponding section break
+                        case 4:
+                          scrollToSection(contactsKey);
+                          break;
+                      }
+                    },)
+                  else
+                    HeaderMobile(
+                      onLogoTab: () {},
+                      menuTab: () {
+                        scaffoldKey.currentState?.openEndDrawer();
+                      },
+                    ),
+
+                  //For desktop
+                  if(constraints.maxWidth>=minSize)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        mainColumn(homeKey),
+                        deviceFrame(),
+                      ],
+                    )
+
+                  //for mobile size
+                  else
+                    Column(
+                      children: [
+                        deviceFrame(),
+                        mainColumn(homeKey),
+                      ],
+                    ),
+                  const SizedBox(height: 12.0),
+
+                  //Skills
+                  skillsContainer(skillsKey,
+                      isDesktop ? 900 : 350, isDesktop ? 30 : 20),
+
+                  //projects
+                  if(constraints.maxWidth>=minSize)
+                    projectContainer(projectsKey,500,110)
+                  else
+                    projectContainer(projectsKey,600,155),
+
+                  //Contacts
+                  Container(
+                    key: contactsKey,
+                    width: double.maxFinite,
+                    height: 200,
+                    color: Colors.black,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        textWhite("Contacts"),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            containerForContacts(GoogleIcon.icons['Github']!,()=>_launchUrl(githubUrl)),
+                            containerForContacts(GoogleIcon.icons['Instagram']!,()=>_launchUrl(instaUrl)),
+                            containerForContacts(GoogleIcon.icons['LinkedIn']!,()=>_launchUrl(linkedInUrl)),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-
-                //For desktop
-                if(constraints.maxWidth>=minSize)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      mainColumn(),
-                      deviceFrame(),
-                    ],
-                  )
-
-                //for mobile size
-                else
-                  Column(
-                    children: [
-                      deviceFrame(),
-                      mainColumn(),
-                    ],
-                  ),
-                const SizedBox(height: 12.0),
-
-                //Skills
-                skillsContainer(isDesktop ? 900 : 350, isDesktop ? 30 : 20),
-
-                //projects
-                if(constraints.maxWidth>=minSize)
-                  projectContainer(500,110)
-                else
-                  projectContainer(600,155),
-
-                //Contacts
-                Container(
-                  width: double.maxFinite,
-                  height: 200,
-                  color: Colors.black,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      textWhite("Contacts"),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          containerForContacts(GoogleIcon.icons['Github']!,()=>_launchUrl(githubUrl)),
-                          containerForContacts(GoogleIcon.icons['Instagram']!,()=>_launchUrl(instaUrl)),
-                          containerForContacts(GoogleIcon.icons['LinkedIn']!,()=>_launchUrl(linkedInUrl)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         }

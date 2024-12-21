@@ -3,10 +3,12 @@ import 'package:flutter_portfolio/constant/colors.dart';
 import 'package:flutter_portfolio/constant/nav_title.dart';
 
 class DrawerPage extends StatelessWidget {
-  const DrawerPage({super.key});
+  final void Function(int index) onNavTap;
+  const DrawerPage({super.key, required this.onNavTap});
 
   @override
   Widget build(BuildContext context) {
+    //Drawer for mobile Screen
     return  Drawer(
       backgroundColor: CustomColor.scaffold,
       child:ListView(
@@ -25,7 +27,7 @@ class DrawerPage extends StatelessWidget {
               contentPadding:const EdgeInsets.symmetric(horizontal: 15),
               leading: Icon(iconsData[i]),
               title:Text(navigationTitle[i]),
-              onTap: (){},
+              onTap: ()=>onNavTap(i),
             ),
         ],
       ),

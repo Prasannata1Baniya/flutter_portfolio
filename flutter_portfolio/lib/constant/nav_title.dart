@@ -10,8 +10,8 @@ List<String> navigationTitle=[
 
 List<IconData> iconsData=[
   Icons.home,
-  Icons.android_outlined,
   Icons.back_hand,
+  Icons.task,
   Icons.web,
   Icons.quick_contacts_mail,
 ] ;

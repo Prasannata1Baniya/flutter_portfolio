@@ -4,7 +4,8 @@ import 'package:flutter_portfolio/constant/nav_title.dart';
 import 'package:flutter_portfolio/widgets/pb.dart';
 
 class HeaderDesktop extends StatelessWidget {
-  const HeaderDesktop({super.key});
+  final void Function(int index) onNavTap;
+  const HeaderDesktop({super.key, required this.onNavTap});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +28,10 @@ class HeaderDesktop extends StatelessWidget {
           LogoPage(onTap: (){}),
           const Spacer(),
           for(int i=0;i<navigationTitle.length;i++)
-            TextButton(onPressed: (){},
-              child:Text(navigationTitle[i],
+            TextButton(onPressed: () => onNavTap(i),
+              child:Text(
+                key: Key('navigation_$i'),
+                navigationTitle[i],
                 style: TextStyle(color: CustomColor.textFieldBg,fontWeight: FontWeight.w700,
                 fontSize: 20),),
             ),
@@ -37,3 +40,10 @@ class HeaderDesktop extends StatelessWidget {
     );
   }
 }
+/*
+ "Home",
+  "Skills",
+  "Project",
+  "Blog",
+  "Contact",
+ */
